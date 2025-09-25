@@ -39,9 +39,7 @@ protected:
   volatile State currentState = UNDECIDED;
   
   // LED pin
-  static const unsigned short LEDPinRed = 4;
-  static const unsigned short LEDPinGreen = 18;
-  static const unsigned short LEDPinBlue = 5;
+
 
 
   // Wifi related fields

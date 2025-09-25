@@ -95,3 +95,23 @@ bool WiFiManager::autoReconnect(){
   return false;
 
 }
+
+void WiFiManager::registerWiFiEvents(){
+  registerWiFiConnected();
+}
+
+void WiFiManager::registerWiFiConnected(){
+  WiFi.onEvent(
+	       onWiFiReconnect,
+	       WiFiEvent_t::ARDUINO_EVENT_WIFI_STA_CONNECTED
+	       )
+}
+
+void WiFiManager::onWiFiReconnect(WiFiEvent_t event, WiFiEventInfo_t info){
+
+}
+
+void WiFiManager::setup(){
+
+
+}
