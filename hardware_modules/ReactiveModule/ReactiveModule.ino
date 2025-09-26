@@ -5,6 +5,7 @@
 
 
 #include "ReactiveModule.h"
+
 #define ONBOARD_LED 2
 #define PIN_RED 4
 #define PIN_BLUE 5
@@ -13,21 +14,12 @@
 #define TIMER_DIVIDER 16
 #define TIMER_SCALE (TIMER_BASE_CLK / TIMER_DIVIDER)
 
-unsigned int a = 0;
-
-
-void lightup(){
-  digitalWrite(PIN_RED,!digitalRead(PIN_RED));
-
-}
-
 
 void setup()
 {
   Serial.begin(9600);
   Serial.println("Starting");
   delay(5000);
-
 
   ReactiveModule mod = ReactiveModule();
 }

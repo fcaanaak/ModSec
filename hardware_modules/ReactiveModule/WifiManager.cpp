@@ -23,7 +23,6 @@ void WiFiManager::connectToWiFi(const char* ssid, const char* password){
   Serial.print(ssid);
   Serial.print(" ");
   Serial.println(password);
-
   
   // Add logic if we fail to connect
   WiFi.begin(ssid,password);
@@ -78,17 +77,15 @@ bool WiFiManager::autoReconnect(){
   String storedSSID = scanStoredNetworks();
  
   if (storedSSID != ""){
-    Serial.println(storedSSID);
+
     prefObject.begin(WIFI_DATABASE,READ);
+    
     String password = prefObject.getString(storedSSID.c_str());
     const char* password_cstring = password.c_str();
-    Serial.print("Password: ");
-    Serial.println(password);
-    Serial.print("C string password: ");
-    Serial.println(password_cstring);
 
     prefObject.end();
     connectToWiFi(storedSSID.c_str(),password_cstring);
+
     return true;
   }
   
@@ -108,10 +105,27 @@ void WiFiManager::registerWiFiConnected(){
 }
 
 void WiFiManager::onWiFiReconnect(WiFiEvent_t event, WiFiEventInfo_t info){
-
+  
+  LEDManager::flashLEDBlocking(0,255,0,3,100);
 }
 
 void WiFiManager::setup(){
+  //  resetToSTA();
 
+  registerWiFiEvents();
 
+  if (!autoReconnect()){
+    LEDManager::setLED(255,0,0);
+    
+  }
+  
+  while (!autoReconnect()){
+    delay(10*1000);
+  }
+  
+}
+
+WiFiManager::WiFiManager(Preferences passedPrefObject){
+  prefObject = passedPrefObject;
+  
 }
