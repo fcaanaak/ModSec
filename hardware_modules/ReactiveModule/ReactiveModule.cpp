@@ -6,47 +6,6 @@
 #define MILLIS_TO_SECONDS 1000
 // LED Functions
 
-void ReactiveModule::setupLED(){
-  /**
-     @brief Set up the pins for the RGB LED
-
-
-  */
-  pinMode(LEDPinRed,OUTPUT);
-  pinMode(LEDPinGreen,OUTPUT);
-  pinMode(LEDPinBlue,OUTPUT);
-
-}
-
-void ReactiveModule::setLEDColor(RGBColor colors){
-  /**
-     @brief Sets the RGB LED to display a given color
-
-     @param colors: A struct to represent an RGB color
-   */
-
-  analogWrite(LEDPinRed,colors.red);
-  analogWrite(LEDPinGreen,colors.green);
-  analogWrite(LEDPinBlue,colors.blue);
-}
-
-void ReactiveModule::disableLED(){
-  /**
-     @brief Sets the RGB LED to be off
-  */
-  RGBColor zeroed = {0,0,0};
-  setLEDColor(zeroed);
-}
-
-void ReactiveModule::LEDIndicateNoNetworks(){
-  /**
-     @brief Sets the RGB LED to be red, to be used when no
-     scanned networks can be found in non-volatile memory
-   */
-  RGBColor red = {255,0,0};
-  setLEDColor(red);
-}
-
 
 void ReactiveModule::resetToSTA(){
   /**
@@ -155,11 +114,11 @@ bool ReactiveModule::autoReconnect(){
   //Serial.println("Connected to the wifi lol");
 
    for (int i =0; i< 3; i++){
-        RGBColor green = {0,255,0};
-	setLEDColor(green);
+     //RGBColor green = {0,255,0};
+	//setLEDColor(green);
 
 	delay(100);
-	disableLED();
+	//	disableLED();
 	delay(100);
    }
 
@@ -211,7 +170,7 @@ void ReactiveModule::setupWiFi(){
   
   if (!autoReconnect()){
 
-    LEDIndicateNoNetworks();
+    //LEDIndicateNoNetworks();
     currentState = NETWORK_RECOVERY;
 
   }
@@ -233,7 +192,7 @@ void ReactiveModule::setupWiFi(){
 }
 void ReactiveModule::setup(){
 
-  setupLED();
+  //setupLED();
   resetToSTA();
   setupWiFi();
   

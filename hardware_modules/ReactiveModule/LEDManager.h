@@ -1,10 +1,15 @@
-#infdef LED_MANAGER_H
+#ifndef LED_MANAGER_H
 #define LED_MANAGER_H
 
-typedef unsigned short ushort
-typedef unsigned int uint
+#include <Arduino.h>
+
+
+
 class LEDManager{
 
+
+  typedef unsigned short ushort;
+  typedef unsigned int uint;
 
  private:
   static const ushort LEDPinRed = 4;

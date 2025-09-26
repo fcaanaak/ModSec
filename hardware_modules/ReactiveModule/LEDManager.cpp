@@ -1,6 +1,5 @@
 #include "LEDManager.h"
-typedef unsigned short ushort
-typedef unsigned int uint
+
 
 void LEDManager::setupLED(){
 
@@ -11,7 +10,7 @@ void LEDManager::setupLED(){
 }
 
 void LEDManager::setLED(ushort red, ushort green, ushort blue){
-  analogWrite(LEDPinRED,red);
+  analogWrite(LEDPinRed,red);
   analogWrite(LEDPinGreen,green);
   analogWrite(LEDPinBlue,blue);
 }
@@ -23,7 +22,7 @@ void LEDManager::disableLED(){
 
 void LEDManager::flashLEDBlocking(ushort red, ushort green,ushort blue, ushort numFlashes, uint delay_time){
 
-  for (usshort currentFlash = 0; currentFlash < numFlashes; currentFlash++){
+  for (ushort currentFlash = 0; currentFlash < numFlashes; currentFlash++){
     LEDManager::setLED(red,green,blue);
     delay(delay_time);
     LEDManager::disableLED();

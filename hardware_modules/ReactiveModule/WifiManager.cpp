@@ -36,7 +36,7 @@ void WiFiManager::connectToWiFi(const char* ssid, const char* password){
   Serial.println();
 }
 
-String WiFiModule::scanStoredNetworks(){
+String WiFiManager::scanStoredNetworks(){
 
   prefObject.begin(WIFI_DATABASE,READ);
 
@@ -104,7 +104,7 @@ void WiFiManager::registerWiFiConnected(){
   WiFi.onEvent(
 	       onWiFiReconnect,
 	       WiFiEvent_t::ARDUINO_EVENT_WIFI_STA_CONNECTED
-	       )
+	       );
 }
 
 void WiFiManager::onWiFiReconnect(WiFiEvent_t event, WiFiEventInfo_t info){
