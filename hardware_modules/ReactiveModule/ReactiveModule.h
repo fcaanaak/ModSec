@@ -5,6 +5,8 @@
 #include <functional>
 #include "WiFiManager.h"
 
+
+
 typedef struct RGBColorStruct {
   unsigned int red;
   unsigned int green;

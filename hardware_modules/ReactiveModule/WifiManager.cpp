@@ -13,7 +13,24 @@ void WiFiManager::resetToSTA(){
   delay(100);
 }
 
-void WiFiManager::connectToWiFi(const char* ssid, const char* password){
+
+bool WiFiManager::waitForConnection(unsigned int waitSecs){
+
+  unsigned int currentSec = 0;
+
+  
+  for (currentSec; (currentSec < waitSecs) && (WiFi.status() != WL_CONNECTED); currentSec++){
+    delay(1000);
+    Serial.print(".");
+
+  }
+
+  return (currentSec < waitSecs);
+
+
+}
+
+bool WiFiManager::connectToWiFi(const char* ssid, const char* password, unsigned int waitSecs){
    /**
      @brief Connect to a WiFi network
      @param ssid: The ssid or name of the WiFi network
@@ -27,18 +44,28 @@ void WiFiManager::connectToWiFi(const char* ssid, const char* password){
   // Add logic if we fail to connect
   WiFi.begin(ssid,password);
   
-  // Connecting to WiFi takes time, this will wait
-  while (WiFi.status() != WL_CONNECTED){
-    delay(1000);
-    Serial.print(".");
-  }
-  Serial.println();
+  return waitForConnection(waitSecs);
+  
+  
+}
+
+bool WiFiManager::reconnectToWiFi(unsigned int waitSecs){
+  /**
+     @brief Reconnect to a WiFi network previously connected to
+     @param waitSecs: Max connection establishment wait time
+     @return true if successful WiFi connection before waitSecs, false otherwise
+   */
+
+  WiFi.reconnect();
+
+  return waitForConnection(waitSecs);
 }
 
 String WiFiManager::scanStoredNetworks(){
 
+  //  prefObject.begin(WIFI_DATABASE,READ);
   prefObject.begin(WIFI_DATABASE,READ);
-
+  
   int availableNetworks = WiFi.scanNetworks();
 
   if (availableNetworks > 0) {
@@ -84,9 +111,10 @@ bool WiFiManager::autoReconnect(){
     const char* password_cstring = password.c_str();
 
     prefObject.end();
-    connectToWiFi(storedSSID.c_str(),password_cstring);
 
-    return true;
+    bool connectionSuccessful = connectToWiFi(storedSSID.c_str(),password_cstring,10);
+
+    return connectionSuccessful;  
   }
   
   return false;
@@ -94,7 +122,11 @@ bool WiFiManager::autoReconnect(){
 }
 
 void WiFiManager::registerWiFiEvents(){
+  
   registerWiFiConnected();
+  registerWiFiDisconnected();
+
+
 }
 
 void WiFiManager::registerWiFiConnected(){
@@ -104,28 +136,57 @@ void WiFiManager::registerWiFiConnected(){
 	       );
 }
 
+void WiFiManager::registerWiFiDisconnected(){
+
+  WiFi.onEvent(
+	       onWiFiDisconnect,
+	       WiFiEvent_t::ARDUINO_EVENT_WIFI_STA_DISCONNECTED
+	       );
+
+}
+
+
 void WiFiManager::onWiFiReconnect(WiFiEvent_t event, WiFiEventInfo_t info){
   
   LEDManager::flashLEDBlocking(0,255,0,3,100);
+
 }
+
+
+void WiFiManager::onWiFiDisconnect(WiFiEvent_t event, WiFiEventInfo_t info){
+
+  LEDManager::setLED(255,0,0);
+
+  
+  reconnectToWiFi(5);// Will only reconnect once, add retries
+  
+}
+
 
 void WiFiManager::setup(){
   //  resetToSTA();
 
   registerWiFiEvents();
 
-  if (!autoReconnect()){
+
+  bool successfulAutoReconnect = autoReconnect();
+  
+  if (!successfulAutoReconnect){
     LEDManager::setLED(255,0,0);
-    
   }
   
-  while (!autoReconnect()){
+  while (!successfulAutoReconnect){
+
+    successfulAutoReconnect = autoReconnect();
     delay(10*1000);
+    
   }
+
+  //LEDManager::setLED(0,255,0);
   
 }
 
-WiFiManager::WiFiManager(Preferences passedPrefObject){
-  prefObject = passedPrefObject;
+WiFiManager::WiFiManager(Preferences passedPrefObj){
+  
   
 }

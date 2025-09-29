@@ -11,12 +11,13 @@
 void ReactiveModule::testMethod(){
   
   modulePrefs.begin(WIFI_DATABASE,READ_WRITE);
+  
+  //  DataManager::putStr();
 
-  const char* ssid = "Linksys00414";
-  String pass = String("Gr3b3nac1966");
-
+  const char* ssid = "test_network";
+  String password = String("12345678");
   modulePrefs.clear();
-  modulePrefs.putString(ssid,pass);
+  modulePrefs.putString(ssid,password);
   Serial.println(modulePrefs.getString(ssid));
   modulePrefs.end();
   
@@ -54,11 +55,10 @@ void ReactiveModule::setupWiFi(){
 void ReactiveModule::setup(){
   LEDManager::setupLED();
   // wifi.resetToSTA();
-  //  testMethod();
+  testMethod();
   wifi.setup();
   //resetToSTA();
   //  setupWiFi();
-  
 }
 
 ReactiveModule::ReactiveModule(){
