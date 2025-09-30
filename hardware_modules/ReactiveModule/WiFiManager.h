@@ -4,6 +4,13 @@
 #include <WiFi.h>
 #include <Preferences.h>
 #include "LEDManager.h"
+
+
+enum State{
+  CONNECTED,
+  DISCONNECTED
+};
+
 class WiFiManager{
 
  private:
@@ -15,6 +22,8 @@ class WiFiManager{
   static bool connectToWiFi(const char* ssid, const char* password, unsigned int waitSecs);
   static bool reconnectToWiFi(unsigned int waitSecs);
   static bool waitForConnection(unsigned int waitSecs);
+  static bool reconnectWithRetries(unsigned int retries, unsigned int waitSecs); 
+
   String scanStoredNetworks();
   bool autoReconnect();
   
@@ -27,14 +36,14 @@ class WiFiManager{
   static void onWiFiReconnect(WiFiEvent_t event, WiFiEventInfo_t info);
   static void onWiFiDisconnect(WiFiEvent_t event, WiFiEventInfo_t info);
 
+  static State state;
 
 public:
 
-   enum State{
-    NETWORK_RECOVERY,
-    MANUAL_SETUP
-  };
+
+  
   WiFiManager(Preferences prefObject);
+  
   void setup();
   
 };

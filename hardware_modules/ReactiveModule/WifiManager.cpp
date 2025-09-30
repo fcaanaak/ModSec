@@ -13,13 +13,30 @@ void WiFiManager::resetToSTA(){
   delay(100);
 }
 
+bool WiFiManager::reconnectWithRetries(unsigned int retries, unsigned int waitSecs){
+
+  unsigned int currentRetry = 0;
+  unsigned int waitTime = waitSecs;
+  
+  for (currentRetry; (currentRetry < retries) && (!reconnectToWiFi(waitTime)); currentRetry++){
+    
+    if (WiFi.disconnect(false,false,10*1000)){
+      Serial.println("disconnected");
+    } else{
+      Serial.println("timeout");
+    }
+  }
+
+  return (currentRetry < retries);
+
+}
 
 bool WiFiManager::waitForConnection(unsigned int waitSecs){
 
   unsigned int currentSec = 0;
 
   
-  for (currentSec; (currentSec < waitSecs) && (WiFi.status() != WL_CONNECTED); currentSec++){
+  for (currentSec; ((currentSec < waitSecs) && (WiFi.status() != WL_CONNECTED)); currentSec++){
     delay(1000);
     Serial.print(".");
 
@@ -149,23 +166,29 @@ void WiFiManager::registerWiFiDisconnected(){
 void WiFiManager::onWiFiReconnect(WiFiEvent_t event, WiFiEventInfo_t info){
   
   LEDManager::flashLEDBlocking(0,255,0,3,100);
+  
 
 }
 
 
 void WiFiManager::onWiFiDisconnect(WiFiEvent_t event, WiFiEventInfo_t info){
 
-  LEDManager::setLED(255,0,0);
 
+  //  LEDManager::flashLEDBlocking(255,0,0,3,100);
   
-  reconnectToWiFi(5);// Will only reconnect once, add retries
+  LEDManager::setLED(255,63,0);
+
+  // Try unregistering this function from the WiFidisconnect event after a bit
+  if (!reconnectToWiFi(30)){
+
+    ESP.restart();
+  }
   
 }
 
 
 void WiFiManager::setup(){
   //  resetToSTA();
-
   registerWiFiEvents();
 
 
