@@ -20,15 +20,13 @@ class ReactiveModule{
 protected:
 
   /* Class fields */
-
-  /**Wi-Fi related fields **/
-  bool connectionRecoveryMode = false;
-
   Preferences modulePrefs;
+  
+  /**Wi-Fi related fields **/
   WiFiManager wifi = WiFiManager(modulePrefs);  
-  unsigned long connectionCheckStartTime;
-  unsigned short inactivityCounter = 0;
-  hw_timer_t* Timer0_Cfg = NULL;// hardware timer
+
+
+
 
   
   enum State{
@@ -39,6 +37,8 @@ protected:
     UNDECIDED
   };
 
+  
+  unsigned short inactivityCounter = 0;
   volatile State currentState = UNDECIDED;
   
   // LED pin
