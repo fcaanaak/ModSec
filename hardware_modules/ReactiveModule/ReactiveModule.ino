@@ -14,18 +14,22 @@
 #define TIMER_DIVIDER 16
 #define TIMER_SCALE (TIMER_BASE_CLK / TIMER_DIVIDER)
 
+ReactiveModule mod = ReactiveModule();
+
 
 void setup()
 {
   Serial.begin(9600);
   Serial.println("Starting");
 
-  ReactiveModule mod = ReactiveModule();
+  delay(5000);
+  mod.setup();
+  
 }
 
 
 void loop()
 {
-  
+  mod.mainloop();
 
 }
