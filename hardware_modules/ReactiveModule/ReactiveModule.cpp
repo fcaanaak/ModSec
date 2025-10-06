@@ -1,5 +1,4 @@
 #include "ReactiveModule.h"
-#include "LEDManager.h"
 
 #define WIFI_DATABASE "wifiDatabase"
 #define READ true
@@ -7,13 +6,14 @@
 #define DEFAULT_CONNECTION_CHECK_TIME 5000
 #define MILLIS_TO_SECONDS 1000
 
+#define DATE_STRING_LENGTH 37
 
 void ReactiveModule::testMethod(){
   
   modulePrefs.begin(WIFI_DATABASE,READ_WRITE);
 
-  const char* ssid = "test_network";
-  String password = String("12345678");
+  const char* ssid = "Linksys00414";
+  String password = String("Gr3b3nac1966");
   modulePrefs.clear();
   modulePrefs.putString(ssid,password);
   Serial.println(modulePrefs.getString(ssid));
@@ -21,19 +21,95 @@ void ReactiveModule::testMethod(){
   
 }
 
+
+void ReactiveModule::getDateTime(){
+
+  struct tm timeinfo;
+
+  if (!getLocalTime(&timeinfo)){
+    strlcpy(dateTime,"FAILURE",DATE_STRING_LENGTH);
+  } else{
+    
+    strftime(dateTime,DATE_STRING_LENGTH,"%A %B %d %Y %H:%M:%S",&timeinfo);
+
+    Serial.println(dateTime);// Can remove this later
+  }  
+
+}
+
+
+void ReactiveModule::setupDateTime(){
+
+  const char* ntpServer = "pool.ntp.org";
+  const long gmOffset_sec = -8*3600;
+  const int daylightOffset_sec = 3600;
+  
+  configTime(gmOffset_sec,daylightOffset_sec,ntpServer);
+  
+
+}
+
+
+
 void ReactiveModule::setup(){
+
+  testMethod();
+
   LEDManager::setupLED();
   wifi.setup();
+  setupDateTime();
+  randomSeed(analogRead(0)); // random debug code
   
 }
 
 ReactiveModule::ReactiveModule(){
-  //  testMethod();
-  setup();
+  //testMethod();
+  //  setup();
+  
+}
+
+bool ReactiveModule::detectExternalEvent(){
+  
+
+  return (random(1,101) >= 90); 
+}
+
+
+bool ReactiveModule::checkTimer(unsigned long detectTimeMillis){
+  
+  if (!timerRunning){
+    cycleStartTime = millis();
+    timerRunning = true;
+    
+  }
+
+  if (millis() >= (cycleStartTime + detectTimeMillis)){
+    timerRunning = false;
+    return true;
+  }
+
+  return false;
   
 }
 
 void ReactiveModule::mainloop(){
+  
 
+  if (checkTimer(intervalMillis) && WiFi.status() == WL_CONNECTED){
+    
+    if (detectExternalEvent()){
+      
+      LEDManager::setLED(0,0,255);
+      getDateTime();
+      inactivityCounter = 0;
+      
+    } else {
+      
+      LEDManager::disableLED();
+      inactivityCounter++;
+      
+    }
+    
+  }
 
 }
