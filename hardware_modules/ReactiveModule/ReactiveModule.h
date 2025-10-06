@@ -3,8 +3,15 @@
 
 #include <Preferences.h>
 #include "WiFiManager.h"
+#include "LEDManager.h"
 #include "time.h"
 
+
+#define HOUR_LENGTH 3
+#define MINUTE_LENGTH 3
+#define SECOND_LENGTH 3
+#define DAY_LENGTH 3
+#define WEEKDAY_LENGTH 10
 
 class ReactiveModule{
 
@@ -45,7 +52,9 @@ protected:
   void sendReport();
 
   // Date time retrieval methods
-  void printLocalTime();
+  void getDateTime();
+  void setupDateTime();
+  char dateTime[37];
   
   // A method purely to run code to test shit out
   void testMethod();

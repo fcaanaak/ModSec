@@ -1,5 +1,4 @@
 #include "ReactiveModule.h"
-#include "LEDManager.h"
 
 #define WIFI_DATABASE "wifiDatabase"
 #define READ true
@@ -7,12 +6,13 @@
 #define DEFAULT_CONNECTION_CHECK_TIME 5000
 #define MILLIS_TO_SECONDS 1000
 
+#define DATE_STRING_LENGTH 37
 
 void ReactiveModule::testMethod(){
   
   modulePrefs.begin(WIFI_DATABASE,READ_WRITE);
 
-  const char* ssid = "Cisco33248-2G4";
+  const char* ssid = "Linksys00414";
   String password = String("Gr3b3nac1966");
   modulePrefs.clear();
   modulePrefs.putString(ssid,password);
@@ -22,29 +22,24 @@ void ReactiveModule::testMethod(){
 }
 
 
-
-void ReactiveModule::printLocalTime(){
+void ReactiveModule::getDateTime(){
 
   struct tm timeinfo;
 
   if (!getLocalTime(&timeinfo)){
-    Serial.println("FAILURE");
+    strlcpy(dateTime,"FAILURE",DATE_STRING_LENGTH);
   } else{
-    Serial.println(&timeinfo,"%A, %B %d %Y %H:%M:%S");
+    
+    strftime(dateTime,DATE_STRING_LENGTH,"%A %B %d %Y %H:%M:%S",&timeinfo);
+
+    Serial.println(dateTime);// Can remove this later
   }  
 
 }
 
 
-void ReactiveModule::setup(){
+void ReactiveModule::setupDateTime(){
 
-  testMethod();
-  LEDManager::setupLED();
-  wifi.setup();
-  randomSeed(analogRead(0)); // random debug code
-
-
-  
   const char* ntpServer = "pool.ntp.org";
   const long gmOffset_sec = -8*3600;
   const int daylightOffset_sec = 3600;
@@ -54,8 +49,21 @@ void ReactiveModule::setup(){
 
 }
 
+
+
+void ReactiveModule::setup(){
+
+  testMethod();
+
+  LEDManager::setupLED();
+  wifi.setup();
+  setupDateTime();
+  randomSeed(analogRead(0)); // random debug code
+  
+}
+
 ReactiveModule::ReactiveModule(){
-  //  testMethod();
+  //testMethod();
   //  setup();
   
 }
@@ -92,7 +100,7 @@ void ReactiveModule::mainloop(){
     if (detectExternalEvent()){
       
       LEDManager::setLED(0,0,255);
-      printLocalTime();
+      getDateTime();
       inactivityCounter = 0;
       
     } else {
