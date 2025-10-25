@@ -68,8 +68,6 @@ ReactiveModule::ReactiveModule(){
   
 }
 
-
-
 bool ReactiveModule::checkTimer(unsigned long detectTimeMillis){
   
   if (!timerRunning){
@@ -102,7 +100,6 @@ void ReactiveModule::mainloop(){
       
       LEDManager::disableLED();
       inactivityCounter++;
-      
     }
     
   }

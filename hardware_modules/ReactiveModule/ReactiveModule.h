@@ -46,8 +46,10 @@ protected:
   unsigned long cycleStartTime = 0;
   
   bool checkTimer(unsigned long detectTimeMillis);
-  bool detectExternalEvent();
-
+  
+  virtual bool detectExternalEvent() = 0;
+  double threshold;
+  
   void generateJSONReport();
   void sendReport();
 
@@ -61,7 +63,7 @@ protected:
   
 public:
   ReactiveModule();
-  void setup();
+  virtual  void setup();
   void mainloop();
 
 };
