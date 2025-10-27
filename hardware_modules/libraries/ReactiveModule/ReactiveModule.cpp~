@@ -1,3 +1,5 @@
+
+#include "Arduino.h"
 #include "ReactiveModule.h"
 
 #define WIFI_DATABASE "wifiDatabase"
@@ -49,8 +51,6 @@ void ReactiveModule::setupDateTime(){
 
 }
 
-
-
 void ReactiveModule::setup(){
 
   testMethod();
@@ -68,11 +68,6 @@ ReactiveModule::ReactiveModule(){
   
 }
 
-bool ReactiveModule::detectExternalEvent(){
-  
-
-  return (random(1,101) >= 90); 
-}
 
 
 bool ReactiveModule::checkTimer(unsigned long detectTimeMillis){

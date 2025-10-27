@@ -1,9 +1,10 @@
 #ifndef REACTIVE_MODULE_H
 #define REACTIVE_MODULE_H
 
+#include "Arduino.h"
 #include <Preferences.h>
-#include "WiFiManager.h"
-#include "LEDManager.h"
+#include "Managers/WiFiManager.h"
+#include "Managers/LEDManager.h"
 #include "time.h"
 
 
@@ -46,8 +47,10 @@ protected:
   unsigned long cycleStartTime = 0;
   
   bool checkTimer(unsigned long detectTimeMillis);
-  bool detectExternalEvent();
-
+  
+  //  virtual bool detectExternalEvent() = 0;
+  double threshold;
+  
   void generateJSONReport();
   void sendReport();
 
