@@ -2,11 +2,7 @@
 
 #define SPEED_OF_SOUND 0.034 // Units cm/(micro seconds)
 
-
 float MotionModule::getMeasuredDistance(){
-  /**
-     @brief Return distance measured from the sensor in cm
-   */
   digitalWrite(sensorTriggerPin, LOW);
   delayMicroseconds(2);
 
@@ -23,6 +19,12 @@ float MotionModule::getMeasuredDistance(){
 }
 
 
+bool MotionModule::detectExternalEvent(){
+
+  return (getMeasuredDistance() < ReactiveModule::threshold);
+
+}
+
 void MotionModule::setupSensor(){
 
   pinMode(sensorTriggerPin, OUTPUT);
@@ -31,10 +33,8 @@ void MotionModule::setupSensor(){
 }
 
 void MotionModule::setup(){
-
   ReactiveModule::setup();
   setupSensor();
-
 }
 
 

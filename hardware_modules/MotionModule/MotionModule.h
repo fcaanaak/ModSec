@@ -1,8 +1,6 @@
 #ifndef MOTION_MODULE_H
 #define MOTION_MODULE_H
-
-#include "../ReactiveModule/ReactiveModule.h"
-
+#include <ReactiveModule.h>
 /*
 
   TODO: 
@@ -19,9 +17,7 @@
   folder
  */
 
-
-
-class MotionModule : public ReactiveModule{
+class MotionModule : public ReactiveModule {
 
  private:
 
@@ -36,9 +32,7 @@ class MotionModule : public ReactiveModule{
   // setup methods
   void setupSensor();
   
-  
  public:
-
   void setup() override;
 };
 

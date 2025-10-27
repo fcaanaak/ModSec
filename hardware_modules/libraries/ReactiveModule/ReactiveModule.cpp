@@ -1,3 +1,5 @@
+
+#include "Arduino.h"
 #include "ReactiveModule.h"
 
 #define WIFI_DATABASE "wifiDatabase"
@@ -16,7 +18,6 @@ void ReactiveModule::testMethod(){
   String password = String("Gr3b3nac1966");
   modulePrefs.clear();
   modulePrefs.putString(ssid,password);
-  Serial.println(modulePrefs.getString(ssid));
   modulePrefs.end();
   
 }
@@ -32,7 +33,6 @@ void ReactiveModule::getDateTime(){
     
     strftime(dateTime,DATE_STRING_LENGTH,"%A %B %d %Y %H:%M:%S",&timeinfo);
 
-    Serial.println(dateTime);// Can remove this later
   }  
 
 }
@@ -50,23 +50,26 @@ void ReactiveModule::setupDateTime(){
 }
 
 
+void ReactiveModule::setThreshold(float newThreshold){
+  
+  threshold = newThreshold;
+
+}
+
+void ReactiveModule::setIntervalMillis(unsigned long newInterval){
+
+  intervalMillis = newInterval;
+
+}
 
 void ReactiveModule::setup(){
-
-  testMethod();
 
   LEDManager::setupLED();
   wifi.setup();
   setupDateTime();
-  randomSeed(analogRead(0)); // random debug code
   
 }
 
-ReactiveModule::ReactiveModule(){
-  //testMethod();
-  //  setup();
-  
-}
 
 bool ReactiveModule::checkTimer(unsigned long detectTimeMillis){
   
@@ -100,6 +103,7 @@ void ReactiveModule::mainloop(){
       
       LEDManager::disableLED();
       inactivityCounter++;
+      
     }
     
   }
