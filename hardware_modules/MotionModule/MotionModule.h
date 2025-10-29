@@ -29,8 +29,15 @@ class MotionModule : public ReactiveModule {
   unsigned long detectionDuration;
   float distanceCM;
 
+  unsigned short calibrationTimeMillis = 3000;
+  unsigned short calibrationDelayMillis = 20;
+  unsigned short numMeasurements = calibrationTimeMillis/calibrationDelayMillis;
+
+  unsigned short toleranceCm = 2;
+
   // setup methods
   void setupSensor();
+  void setupThreshold();
   
  public:
   void setup() override;

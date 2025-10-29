@@ -14,8 +14,8 @@ void ReactiveModule::testMethod(){
   
   modulePrefs.begin(WIFI_DATABASE,READ_WRITE);
 
-  const char* ssid = "Linksys00414";
-  String password = String("Gr3b3nac1966");
+  const char* ssid = "";
+  String password = String("");
   modulePrefs.clear();
   modulePrefs.putString(ssid,password);
   modulePrefs.end();
