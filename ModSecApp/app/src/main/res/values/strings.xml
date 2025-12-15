@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">ModSecApp</string>
+
+    <!-- Titles for app pages -->
+    <string name="dashboard_title">Dashboard</string>
+    <string name="report_title">Report</string>
+    <string name="devices_title">Devices</string>
+
+    <!-- ***Placeholder text*** -->
+
+    <!-- Placeholder text for app pages -->
+    <string name="dashboard_text">Hello from dashboard</string>
+    <string name="report_text">Hello from report</string>
+    <string name="devices_text">Hello from devices</string>
+
+    <!-- Placeholder text for reports -->
+    <string name="report_entry_device_name_placeholder">Device Name</string>
+    <string name="report_entry_date_placeholder">January 01, 2023</string>
+    <string name="report_entry_time_placeholder">23:59:59</string>
+</resources>
