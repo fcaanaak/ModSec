@@ -8,11 +8,12 @@
 
     <TextView
         android:id="@+id/entryDeviceName"
-        android:layout_width="200dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:gravity="center"
         android:maxLines="1"
+        android:maxLength="30"
         android:text="@string/report_entry_device_name_placeholder"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"

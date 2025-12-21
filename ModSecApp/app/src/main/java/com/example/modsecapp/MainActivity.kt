@@ -1,12 +1,12 @@
 package com.example.modsecapp
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
-
+import com.example.modsecapp.pages.dashboard.DashboardFragment
+import com.example.modsecapp.pages.devices.DevicesFragment
+import com.example.modsecapp.pages.report.ReportFragment
 
 class MainActivity : AppCompatActivity() {
 

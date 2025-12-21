@@ -1,17 +1,18 @@
-package com.example.modsecapp
+package com.example.modsecapp.pages.devices
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.example.modsecapp.R
 
 /**
- * A simple [Fragment] subclass.
- * Use the [DashboardFragment.newInstance] factory method to
+ * A simple [androidx.fragment.app.Fragment] subclass.
+ * Use the [DevicesFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class DashboardFragment : Fragment() {
+class DevicesFragment : Fragment() {
     // TODO: Rename and change types of parameters
 
     override fun onCreateView(
@@ -19,8 +20,7 @@ class DashboardFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_dashboard, container, false)
+        return inflater.inflate(R.layout.fragment_device_settings, container, false)
     }
-
 
 }

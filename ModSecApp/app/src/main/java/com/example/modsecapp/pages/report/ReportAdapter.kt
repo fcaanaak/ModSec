@@ -1,14 +1,14 @@
-package com.example.modsecapp
+package com.example.modsecapp.pages.report
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.modsecapp.R
+import com.example.modsecapp.pages.report.ReportEntry
 
-
-class ReportAdapter( val reportList: List<ReportEntry>) :
+class ReportAdapter( var reportList: List<ReportEntry>) :
     RecyclerView.Adapter<ReportAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -20,13 +20,18 @@ class ReportAdapter( val reportList: List<ReportEntry>) :
         val ReportEntry = reportList[position]
 
         holder.entryDeviceName.text = ReportEntry.reportingDevice
-        holder.entryDate.text = ReportEntry.date
-        holder.entryTime.text = ReportEntry.time
+        holder.entryDate.text = ReportEntry.displayDate
+        holder.entryTime.text = ReportEntry.displayTime
 
     }
 
     override fun getItemCount(): Int {
         return reportList.size
+    }
+
+    fun updateList(newList: List<ReportEntry>){
+        reportList = newList
+        notifyDataSetChanged()
     }
 
     // ViewHolder class
