@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.modsecapp.R
+import com.example.modsecapp.pages.report.filter.FilterKey
 import java.util.Calendar
 import com.example.modsecapp.pages.report.filter.ReportFilter
 import com.google.android.material.chip.Chip
@@ -24,7 +25,6 @@ import java.time.LocalDateTime
  * create an instance of this fragment.
  */
 class ReportFragment : Fragment() {
-
 
 
     // UI Widgets
@@ -61,7 +61,7 @@ class ReportFragment : Fragment() {
 
     ): View? {
 
-        reportFilter = ReportFilter()
+        reportFilter = ReportFilter
 
         // Inflate the layout for this fragment
         val view: View? = inflater.inflate(R.layout.fragment_report, container, false)
@@ -78,6 +78,44 @@ class ReportFragment : Fragment() {
         reportFilterChipHour = view!!.findViewById(R.id.reportFilterChipHour)
         reportFilterChipMinute = view!!.findViewById(R.id.reportFilterChipMinute)
 
+        setupFilterGroup()
+        setupDateFilter(view,dateFilterButton)
+        setupTimeFilter(view,timeFilterButton)
+
+        return view
+    }
+
+
+    /**
+     * Get all the reports filtered by the active filter keys
+     * @return A (mutable) list of all reports filtered by active keys that match the filters
+     */
+    private fun getFilteredReportEntries(): MutableList<ReportEntry>{
+
+
+        return originalEntries.filter{
+
+            mutableMapOf(
+                reportFilter.yearKey to it.year,
+                reportFilter.monthKey to it.month,
+                reportFilter.dayKey to it.day,
+                reportFilter.hourKey to it.hour,
+                reportFilter.minuteKey to it.minute,
+            ).filter{(k, _)->
+                k.active
+            }.all{
+                    (k,v) -> k.data == v
+            }
+
+        }.toMutableList()
+
+    }
+
+    /**
+     * Set up behavior for the filtration system
+     */
+    private fun setupFilterGroup(){
+
         reportFiltersChipGroup.setOnCheckedStateChangeListener { group, checkedIds ->
 
             reportFilter.disableAllFilters()
@@ -90,34 +128,12 @@ class ReportFragment : Fragment() {
                     R.id.reportFilterChipDay -> reportFilter.dayKey.active = true
                     R.id.reportFilterChipHour -> reportFilter.hourKey.active = true
                     R.id.reportFilterChipMinute -> reportFilter.minuteKey.active = true
-
                 }
-
             }
 
-            // Testing out filtration, delete later if needed
-            reportEntryAdapter.updateList(
-                originalEntries.filter{
-                    it.year == reportFilter.yearKey.data
-                }.toMutableList()
-
-            )
+            reportEntryAdapter.updateList(getFilteredReportEntries())
 
         }
-
-
-           /*
-            originalEntries.filterTo(dynamicEntries){
-               it.year
-           }
-           */
-
-
-        setupDateFilter(view,dateFilterButton)
-        setupTimeFilter(view,timeFilterButton)
-
-
-        return view
     }
 
 
@@ -162,14 +178,10 @@ class ReportFragment : Fragment() {
         dateFilterButton.setOnClickListener {
             val c = Calendar.getInstance()
 
-            // on below line we are getting
-            // our day, month and year.
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
 
-            // on below line we are creating a
-            // variable for date picker dialog.
             val datePickerDialog = this.context?.let { it1 ->
                 DatePickerDialog(
 
@@ -179,7 +191,8 @@ class ReportFragment : Fragment() {
                         dateFilterButton.text = dat
 
                         reportFilter.yearKey.data = year
-                        reportFilter.monthKey.data = monthOfYear
+                        // datepicker months go from [0-11] but java localdatetime months go from [1,12]
+                        reportFilter.monthKey.data = monthOfYear+1
                         reportFilter.dayKey.data = dayOfMonth
 
                         setDateChipsText(year,monthOfYear,dayOfMonth)
@@ -193,6 +206,14 @@ class ReportFragment : Fragment() {
         }
     }
 
+
+    /**
+     * Set the text for all the date related filter chips to the passed in date values
+     *
+     * @param year the year for the year filter
+     * @param month the year for the month filter
+     * @param day the year for the day filter
+     */
     private fun setDateChipsText(year:Int, month:Int, day: Int){
 
         val monthNames: Array<String> = arrayOf(
@@ -216,14 +237,15 @@ class ReportFragment : Fragment() {
         )
     }
 
+    /**
+     * Hook up the data array that holds the reports to the UI
+     *
+     * @param view the view object for the reports page
+     */
     private fun setupReportData(view: View?){
-        /**
-         *
-         * Hook up the data array that holds the reports to the UI
-         */
 
         // Ignore the warning here, we are passing in a view created earlier
-        reportRecyclerView = view!!.findViewById<RecyclerView>(R.id.recyclerView)
+        reportRecyclerView = view!!.findViewById(R.id.recyclerView)
 
         originalEntries = generateTestDataList()
         dynamicEntries = originalEntries.toMutableList()
@@ -235,26 +257,35 @@ class ReportFragment : Fragment() {
 
     }
 
+    /**
+     * Method to generate sample data array for Reports (remove later)
+     */
     private fun generateTestDataList(): MutableList<ReportEntry>{
-        /**
-         * Method to generate sample data array for Reports (remove later)
-         *
-         */
 
-        return mutableListOf<ReportEntry>(
+        return mutableListOf(
             ReportEntry("123456789012345678901234567890", LocalDateTime.of(
                 2005, 11, 23, 11, 59,12
             )),
+
             ReportEntry("123456789012345678901234567890", LocalDateTime.of(
-                2011, 1, 11, 5, 1,9
-            )),
-            ReportEntry("123456789012345678901234567890", LocalDateTime.of(
-                2025, 8, 2, 2, 2,2
-            )),
-            ReportEntry("123456789012345678901234567890", LocalDateTime.of(
-                2005, 11, 23, 22, 59,12
+                2006, 11, 23, 11, 59,12
             )),
 
+            ReportEntry("123456789012345678901234567890", LocalDateTime.of(
+                2005, 12, 23, 22, 59,12
+            )),
+
+            ReportEntry("123456789012345678901234567890", LocalDateTime.of(
+                2005, 12, 24, 22, 59,12
+            )),
+
+            ReportEntry("123456789012345678901234567890", LocalDateTime.of(
+                2005, 12, 24, 23, 59,12
+            )),
+
+            ReportEntry("123456789012345678901234567890", LocalDateTime.of(
+                2005, 12, 24, 23, 11,12
+            )),
             )
     }
 

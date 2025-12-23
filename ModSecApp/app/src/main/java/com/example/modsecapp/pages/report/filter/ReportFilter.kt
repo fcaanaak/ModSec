@@ -2,7 +2,7 @@ package com.example.modsecapp.pages.report.filter
 
 import com.example.modsecapp.Constants
 
-class ReportFilter {
+object ReportFilter {
 
     var minuteKey = FilterKey(Constants.DEFAULT_FILTER_TIME_VALUE)
 
