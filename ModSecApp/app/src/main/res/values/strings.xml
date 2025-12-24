@@ -43,4 +43,19 @@
     <string name="report_filter_chip_day_text">Day: %1$d</string>
     <string name="report_filter_chip_hour_text">Hour: %1$d</string>
     <string name="report_filter_chip_minute_text">Minute: %1$d</string>
+
+
+    <!-- ***Text for Devices page*** -->
+
+    <string name="devices_add_device_button_text">Add Device</string>
+
+    <!-- Text for Device Entry Card -->
+    <string name="device_entry_card_name">Name: %1$s</string>
+    <string name="device_entry_card_status">Status: %1$s</string>
+    <string name="device_entry_card_last_call">Last Call: %1$s</string>
+    <string name="device_entry_card_remove_button_text">Remove</string>
+
+
+
+
 </resources>

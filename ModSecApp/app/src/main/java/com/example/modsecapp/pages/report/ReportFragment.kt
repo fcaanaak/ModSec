@@ -3,7 +3,7 @@ package com.example.modsecapp.pages.report
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
-import android.util.Log
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.modsecapp.R
-import com.example.modsecapp.pages.report.filter.FilterKey
+
 import java.util.Calendar
 import com.example.modsecapp.pages.report.filter.ReportFilter
 import com.google.android.material.chip.Chip

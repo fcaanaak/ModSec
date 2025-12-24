@@ -22,10 +22,14 @@
             android:id="@+id/devicesAddButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/report_filter_button_time_default" />
+            android:text="@string/devices_add_device_button_text" />
 
-    
-
+    <GridView
+        android:layout_width="match_parent"
+        android:id="@+id/gridView"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:numColumns="auto_fit" />
 
 
 </LinearLayout>
