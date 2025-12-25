@@ -1,6 +1,0 @@
-profiles:
-	motion:
-		fqbn: esp32:esp32:esp32
-		programmer: Pip
-		libraries:
-			- dir: 
