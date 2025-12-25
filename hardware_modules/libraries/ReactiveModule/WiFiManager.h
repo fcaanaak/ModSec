@@ -39,8 +39,6 @@ class WiFiManager{
   static State state;
 
 public:
-
-
   
   WiFiManager(Preferences prefObject);
   

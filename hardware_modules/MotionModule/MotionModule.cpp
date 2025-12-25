@@ -27,6 +27,7 @@ bool MotionModule::detectExternalEvent(){
 
 void MotionModule::setupSensor(){
 
+
   pinMode(sensorTriggerPin, OUTPUT);
   pinMode(sensorEchoPin, INPUT);
   
@@ -53,8 +54,3 @@ void MotionModule::setup(){
   setupSensor();
   setupThreshold();
 }
-
-
-
-
-

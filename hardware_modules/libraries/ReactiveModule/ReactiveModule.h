@@ -64,7 +64,7 @@ protected:
   
 public:
   
-  virtual  void setup();
+  virtual void setup();
   void setThreshold(float newThreshold);
   void setIntervalMillis(unsigned long newInterval);
   void mainloop();
