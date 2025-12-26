@@ -1,5 +1,4 @@
 #include "MotionModule.h"
-
 MotionModule mod = MotionModule();
 
 void setup(){

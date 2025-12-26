@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 import com.example.modsecapp.pages.dashboard.DashboardFragment
 import com.example.modsecapp.pages.devices.DevicesFragment
 import com.example.modsecapp.pages.report.ReportFragment
-
+import com.example.modsecapp.pages.devices.DevicePairingDialog
 class MainActivity : AppCompatActivity() {
 
 
@@ -28,7 +28,6 @@ class MainActivity : AppCompatActivity() {
 
         setCurrentFragment(dashboardFragment)
 
-
         bottomNavigationView.setOnItemSelectedListener {
 
             when (it.itemId){
@@ -37,10 +36,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.devices -> setCurrentFragment(devicesFragment)
             }
             true
-
         }
-
-
     }
 
     private fun setCurrentFragment(fragment: Fragment){
@@ -49,4 +45,7 @@ class MainActivity : AppCompatActivity() {
             commit()
         }
     }
+
+
+
 }
