@@ -2,6 +2,7 @@
 #define WIFI_PROV_MANAGER_H
 
 #include <WiFiProvisioner.h>
+#include <Preferences.h>
 
 class WiFiProvManager{
 
@@ -9,7 +10,8 @@ class WiFiProvManager{
 
   // Fields
   WiFiProvisioner provisioner;
-
+  Preferences prefObject;
+  
   // Methods
 
   void setupProvConfig();
@@ -22,8 +24,8 @@ class WiFiProvManager{
  public:
 
   void setup();
+  void activateProvisioning();
   
-
 }
 
 

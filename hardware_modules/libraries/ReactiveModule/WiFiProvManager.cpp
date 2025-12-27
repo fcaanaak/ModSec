@@ -1,9 +1,5 @@
 #include "WifiProvManager.h"
 
-
-
-
-
 // Setup methods
 
 /**
@@ -12,22 +8,53 @@
 */
 void WiFiProvManager::setupProvConfig(){
 
-  WiFiProvisioner::Config customConfig(
-    "NewModsecDevice",                    // Access Point Name
-    "Welcome!",                      // HTML Page Title
-    "#007BFF",                       // Theme Color
-    R"<svg xmlns="http://www.w3.org/2000/svg" width="200" height="100">
-  <rect x="10" y="10" width="200" height="100" fill="blue" />
-    </svg>",                // SVG Logo
-    "Custom Project",                // Project Title
-    "Setup Your Device",             // Project Sub-title
-    "Follow these steps:",           // Project Info
-    "Connected!",                    // Success Message
-    "Reset all?",                    // Reset Confirmation Text
-    "Enter Key:",                    // Input Field Label
-    6,                               // Input Field Length
-    true,                            // Show Input Field
-    false                            // Show Reset Field
-);
+  WiFiProvisioner::Config &config = provisioner.getConfig();
+  
+  config.AP_NAME = "New Modsec Device";
+  config.HTML_TITLE = "New Device Setup";
+  config.THEME_COLOR = "#666060";
+  config.SVG_LOGO = "New Modsec Device";
+  config.PROJECT_TITLE= "New Modsec Device";
+  config.FOOTER_TEXT= "New Modsec Device";
+  config.RESET_CONFIRMATION_TEXT = "RESET?";
+  config.CONNECTION_SUCCESSFUL = "CONNECTION SUCCESSFUL :)";
+  config.INPUT_TEXT = "New Modsec Device";
+  config.INPUT_LENGTH = 6;
+  config.SHOW_INPUT_FIELD = false;
+  config.SHOW_RESET_FIELD = false;
   
 }
+
+
+void WiFiProvManager::setupSuccessCallback(){
+
+  provisioner.onSuccess( [this](const char* ssid, const char* password, const char* input) {
+    prefObject.begin("wifiDatabase", false);
+    prefObject.putString(ssid,password);
+    prefObject.end();
+  });
+
+}
+
+void WiFiProvManager::setupProvCallback(){
+  
+}
+
+void WiFiProvManager::setupCallbacks(){
+
+  setupProvCallback();
+  setupSuccessCallback();
+
+}
+
+
+void WiFiProvManager::activateProvisioning(){
+  provisioner.startProvisioning();
+}
+
+void WiFiProvManager::setup(){
+
+  setupCallbacks();
+  
+}
+
